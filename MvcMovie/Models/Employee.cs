@@ -1,8 +1,8 @@
-namespace MvcProject.Models
+namespace MvcMovie.Models
 {
     public class Employee : Person
     {
-        public required string EmployeeId { get; set; }
-        public required int Age { get; set; }
+        public int EmployeeId { get; set; } = 0;
+        public string ChucVu { get; set; } = "";
     }
 }
