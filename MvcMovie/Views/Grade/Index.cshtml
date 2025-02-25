@@ -1,0 +1,22 @@
+@model MvcMovie.Models.Grade
+
+
+<h2>Tính điểm môn học</h2>
+
+<form method="post">
+    <label for="A">Điểm A:</label>
+    <input type="number" step="0.1" name="A" required /><br />
+
+    <label for="B">Điểm B:</label>
+    <input type="number" step="0.1" name="B" required /><br />
+
+    <label for="C">Điểm C:</label>
+    <input type="number" step="0.1" name="C" required /><br />
+
+    <button type="submit">Tính điểm</button>
+</form>
+
+@if (ViewBag.Result != null)
+{
+    <h3>@ViewBag.Result</h3>
+}

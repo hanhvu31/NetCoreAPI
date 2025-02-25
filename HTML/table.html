@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table,
+    td,
+    th {
+        border: 1px solid rgb(226, 67, 67);
+        border-collapse: collapse;
+    }
+
+    .h1 {
+        width: 200px;
+        padding: 15px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #D6EEEE;
+    }
+</style>
+
+<body>
+
+    <table>
+        <colgroup>
+            <col span="2" style="background-color: #D6EEEE">
+        </colgroup>
+        <tr>
+            <th class="h1">Tên sinh viên</th>
+            <th>Mã sinh viên</th>
+            <th>Học lớp</th>
+        </tr>
+        <tr>
+            <td class="h1">Vũ Trung Hanh </td>
+            <td> 2121050563</td>
+            <td>DCCTCT66_04C</td>
+        </tr>
+        <tr>
+            <td class="h1">Nguyễn Đỗ Thái Bảo</td>
+            <td> 2121050510</td>
+            <td>DCCTCT66_04B</td>
+        </tr>
+    </table>
+
+
+    <br><br><br>
+    <table>
+        <tr>
+            <th>MON</th>
+            <th class="h1">TUE</th>
+            <th>WED</th>
+        </tr>
+        <tr>
+            <th>8:00 </th>
+            <td class="h1">Vũ Trung Hanh </td>
+            <td>2121050563</td>
+        </tr>
+        <tr>
+            <th>9:53</th>
+            <td class="h1"> Vũ Trung Hanh </td>
+            <td>2121050563</td>
+        </tr>
+    </table>
+
+    <br><br><br>
+    <table>
+        <tr>
+            <th class="h1" colspan="2">Tên sinh viên</th>
+            <th>Mã sinh viên</th>
+            <th>Học lớp</th>
+        </tr>
+        <tr>
+            <td>Vũ Trung</td>
+            <td>Hanh</td>
+            <td>DCCTCT66_04C</td>
+            <td>DCCTCT66_04C</td>
+        </tr>
+        <tr>
+            <td>Nguyễn Đỗ </td>
+            <td>Thái Bảo</td>
+            <td>DCCTCT66_04B</td>
+            <td>DCCTCT66_04B</td>
+        </tr>
+    </table>
+
+
+    <br><br><br>
+    <table>
+        <tr>
+            <th>Họ</th>
+            <th>Tên</th>
+
+            <th>Học lớp</th>
+        </tr>
+        <tr>
+            <td rowspan="2">Vũ</td>
+            <td>Trung Hanh</td>
+            <td>DCCTCT66_04C</td>
+        </tr>
+        <tr>
+
+            <td>Thái Bảo </td>
+            <td>DCCTCT66_04B</td>
+        </tr>
+    </table>
+
+
+</body>
+
+</html>

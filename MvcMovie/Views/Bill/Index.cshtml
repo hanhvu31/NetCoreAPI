@@ -1,0 +1,24 @@
+@model MvcMovie.Models.Bill
+@{
+    ViewData["Title"] = "Tính Tiền Hóa Đơn";
+}
+
+<h2>Tính Tiền Hóa Đơn</h2>
+
+<form asp-action="Index" method="post">
+    <label for="ProductName">Tên sản phẩm:</label>
+    <input type="text" asp-for="ProductName" required class="form-control" />
+
+    <label for="Quantity">Số lượng:</label>
+    <input type="number" asp-for="Quantity" required class="form-control" />
+
+    <label for="UnitPrice">Đơn giá:</label>
+    <input type="number" asp-for="UnitPrice" required step="0.01" class="form-control" />
+
+    <button type="submit" class="btn btn-primary mt-2">Tính tiền</button>
+</form>
+
+@if (ViewBag.Result != null)
+{
+    <h3>@ViewBag.Result</h3>
+}
