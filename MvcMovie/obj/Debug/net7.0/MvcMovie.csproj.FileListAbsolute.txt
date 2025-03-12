@@ -28,3 +28,4 @@ G:\Net_Core_API\MvcMovie\obj\Debug\net7.0\refint\MvcMovie.dll
 G:\Net_Core_API\MvcMovie\obj\Debug\net7.0\MvcMovie.pdb
 G:\Net_Core_API\MvcMovie\obj\Debug\net7.0\MvcMovie.genruntimeconfig.cache
 G:\Net_Core_API\MvcMovie\obj\Debug\net7.0\ref\MvcMovie.dll
+G:\Net_Core_API\MvcMovie\obj\Debug\net7.0\MvcMovie.sourcelink.json

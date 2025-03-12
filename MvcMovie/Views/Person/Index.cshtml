@@ -1,10 +1,35 @@
-<h1>Dữ liệu từ Controller gửi về là: @ViewBag.infoPerson</h1>
-<form asp-action="Index">
-    <label>Nhập PersonID</label>
-    <input type="text" name="PersonId">
-    <label>Nhập họ tên:</label>
-    <input type="text" name="FullName">
-    <label>Nhập địa chỉ:</label>
-    <input type="text" name="Address">
-    <input type="submit" value="Gửi dữ liệu">
-</form>
+@model IEnumerable<MvcMovie.Models.Person>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.Address)</th>
+            <th>@Html.DisplayNameFor(model => model.Age)</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.PersonId" class="btn btn-primary btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.PersonId" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
