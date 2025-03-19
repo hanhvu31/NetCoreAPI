@@ -1,9 +1,10 @@
-using System; // Nhớ thêm using System nếu bạn dùng DateTime
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcMovie.Models // Thay YourNamespace bằng namespace của bạn
 {
     public class DaiLy
     {
+        [Key]
         public int MaDaiLy { get; set; } = 0;
         public string TenDaiLy { get; set; } = "";
         public string DiaChi { get; set; } = "";
