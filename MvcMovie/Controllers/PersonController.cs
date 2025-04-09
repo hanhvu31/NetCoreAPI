@@ -122,5 +122,35 @@ namespace MvcMovie.Controllers
         {
             return _context.Person.Any(e => e.PersonId == id);
         }
+        public async Task<IActionResult>Upload()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult>Upload(IFormFile file)
+        {
+            if (file!=null)
+            {
+                string fileExtension = Path.GetExtension(file.FileName);
+                if (fileExtension !=".xls"&& fileExtension !=".xlsx")
+                {
+                    ModeState.AddModelError("","Please choose excel file to upload!");
+                }
+                else
+                {
+                    //rename file when upload to sever
+                    var fileName = Datetime.Now.ToShortTimeString() + fileExtension;
+                    var filePath = filePath.Combine(Directory.GetCurrenDirectory() + "/Uploads/Excels", fileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        //save file to sever
+                        await file.CopyToAsync(stream);
+                    }
+                }
+            }
+            return View();
+        }
     }
 }
