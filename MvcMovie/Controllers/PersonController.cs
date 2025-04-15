@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
 using MvcMovie.Models.Process;
+using OfficeOpenXml;
+using X.PagedList;
 
 namespace MvcMovie.Controllers
 {
@@ -15,9 +17,20 @@ namespace MvcMovie.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize)
         {
-            var model = await _context.Person.ToListAsync();
+            ViewBag.PageSize = new List<SelectListItem>()
+            {
+                new SelectListItem() {Value="3", Text="3"},
+                new SelectListItem() {Value="5", Text="5"},
+                new SelectListItem() {Value="10", Text="10"},
+                new SelectListItem() {Value="15", Text="15"},
+                new SelectListItem() {Value="25", Text="25"},
+                new SelectListItem() {Value="50", Text="50"},
+            };
+            int Pagesize = (PageSize ?? 3);
+            ViewBag.pszie = Pagesize;
+            var model = _context.Person.ToList().ToPagedList(page ?? 1, pagesize);
             return View(model);
         }
 
@@ -167,6 +180,24 @@ namespace MvcMovie.Controllers
                 }
             }
             return View();
+             public IActionResult Download ()
+        {
+            //name the file when downloading
+            var fileName = "yourFileName" + ".xlsx";
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                //add some text to cell A1
+                worksheet.Cells["A1"].Value = "PersonId";
+                worksheet.Cells["B1"].Value = "FullName";
+                worksheet.Cells["C1"].Value = "Address";
+                worksheet.Cells["D1"].Value = "Email";
+                //Get all persion
+                var personList = _context.Person.ToList();
+                //fill data to worksheet
+                worksheet.Cells["A2"].LoadFromCollection(personList);
+                var stream = new MemoryStream(excelPackage.GetAsByteArray());
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
     }
 }
