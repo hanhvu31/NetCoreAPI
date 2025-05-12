@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DemoMvc.Data;
-using DemoMvc.Models;
-using DemoMVC.Models.Process;
-using System.Data;
+using MvcMovie.Data;
+using MvcMovie.Models;
+using MvcMovie.Models.Process;
 using OfficeOpenXml;
 
-
-namespace DemoMvc.Controllers
+namespace MvcMovie.Controllers
 {
     public class PersonController : Controller
     {
@@ -23,7 +23,7 @@ namespace DemoMvc.Controllers
         {
             _context = context;
         }
-        
+
         // GET: Person
         public async Task<IActionResult> Index()
         {
@@ -38,8 +38,7 @@ namespace DemoMvc.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
-                .FirstOrDefaultAsync(m => m.PersonId == id);
+            var person = await _context.Person.FirstOrDefaultAsync(m => m.PersonId == id);
             if (person == null)
             {
                 return NotFound();
@@ -55,8 +54,6 @@ namespace DemoMvc.Controllers
         }
 
         // POST: Person/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonId,FullName,Address,Email")] Person person)
@@ -87,8 +84,6 @@ namespace DemoMvc.Controllers
         }
 
         // POST: Person/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("PersonId,FullName,Address,Email")] Person person)
@@ -129,8 +124,7 @@ namespace DemoMvc.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
-                .FirstOrDefaultAsync(m => m.PersonId == id);
+            var person = await _context.Person.FirstOrDefaultAsync(m => m.PersonId == id);
             if (person == null)
             {
                 return NotFound();
@@ -158,79 +152,76 @@ namespace DemoMvc.Controllers
         {
             return _context.Person.Any(e => e.PersonId == id);
         }
-        public async Task<IActionResult> Upload ()
+
+        // GET: Upload
+        public IActionResult Upload()
         {
             return View();
         }
+
+        // POST: Upload
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            if (file !=null)
+            if (file != null)
             {
                 string fileExtension = Path.GetExtension(file.FileName);
-                if( fileExtension != ".xls"&& fileExtension != ".xlsx")
+                if (fileExtension != ".xls" && fileExtension != ".xlsx")
                 {
-                    ModelState.AddModelError("","Please choose excel file to upload!");
-
+                    ModelState.AddModelError("", "Please choose an Excel file to upload!");
                 }
                 else
                 {
-                    //rename file to upload to server
-                    var fileName = DateTime.Now.ToShortTimeString() + fileExtension;
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Uploads/Excels", fileName);
-                    var fileLocation = new FileInfo(filePath).ToString();
-                    using (var stream =  new FileStream(filePath, FileMode.Create))
-                    {
-                        //save file to server
-                        await file.CopyToAsync(stream);
-                        //read data from excel file fill datatable
-                        var dt = _excelProcess.ExcelToDataTable(fileLocation);
-                        //using for loop to read data from dt
-                        for ( int i=0; i< dt.Rows.Count; i++)
-                        {
-                            //Create new person object
-                            var ps = new Person();
-                            //set value to attributes
-                            ps.PersonId = dt.Rows[i][0].ToString();
-                            ps.FullName = dt.Rows[i][1].ToString();
-                            ps.Address =  dt.Rows[i][2].ToString();
-                            ps.Email =  dt.Rows[i][3].ToString();
-                            //add object to context
-                            _context.Add(ps);
+                    // Rename file to upload to server
+                    var fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + fileExtension;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Excels", fileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath)); // Ensure folder exists
 
-                        }
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        // Save file to server
+                        await file.CopyToAsync(stream);
                     }
+
+                    // Read data from Excel
+                    var dt = _excelProcess.ExcelToDataTable(filePath);
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        var ps = new Person
+                        {
+                            PersonId = dt.Rows[i][0].ToString(),
+                            FullName = dt.Rows[i][1].ToString(),
+                            Address = dt.Rows[i][2].ToString(),
+                            Email = dt.Rows[i][3].ToString()
+                        };
+                        _context.Add(ps);
+                    }
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
             }
             return View();
         }
-        public IActionResult Download ()
+
+        public IActionResult Download()
         {
-            //name the file when downloading
-            var fileName = "yourFileName" + ".xlsx";
-            using (ExcelPackage excelPackage = new ExcelPackage())
+            var fileName = "PersonList.xlsx";
+            using (var excelPackage = new ExcelPackage())
             {
-                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
-                //add some text to cell A1
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet1");
                 worksheet.Cells["A1"].Value = "PersonId";
                 worksheet.Cells["B1"].Value = "FullName";
                 worksheet.Cells["C1"].Value = "Address";
                 worksheet.Cells["D1"].Value = "Email";
-                //Get all persion
+
                 var personList = _context.Person.ToList();
-                //fill data to worksheet
-                worksheet.Cells["A2"].LoadFromCollection(personList);
+                worksheet.Cells["A2"].LoadFromCollection(personList, true);
+
                 var stream = new MemoryStream(excelPackage.GetAsByteArray());
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-
             }
         }
-        //()
-        
-
-
     }
 }

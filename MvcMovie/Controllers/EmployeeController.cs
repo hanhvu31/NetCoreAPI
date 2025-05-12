@@ -35,7 +35,7 @@ namespace MvcMovie.Controllers
 
             var employee = await _context.Employee
                 .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (employee == null)
+            if (employee.Id.ToString() == personId)
             {
                 return NotFound();
             }

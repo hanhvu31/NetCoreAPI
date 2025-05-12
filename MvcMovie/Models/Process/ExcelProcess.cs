@@ -1,6 +1,6 @@
 using System.Data;
-using OfficeOpenXml;
 using System.IO;
+using OfficeOpenXml;
 
 namespace MvcMovie.Models.Process
 {
@@ -8,31 +8,28 @@ namespace MvcMovie.Models.Process
     {
         public DataTable ExcelToDataTable(string path)
         {
-            FileInfo fileInfo = new FileInfo(path);
-            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            var dt = new DataTable();
+            using (var package = new ExcelPackage(new FileInfo(path)))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                DataTable dt = new DataTable();
-
-                foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                if (worksheet != null)
                 {
-                    dt.Columns.Add(firstRowCell.Text);
-                }
-
-                for (int rowNum = 2; rowNum <= worksheet.Dimension.End.Row; rowNum++)
-                {
-                    var wsRow = worksheet.Cells[rowNum, 1, rowNum, worksheet.Dimension.End.Column];
-                    DataRow row = dt.NewRow();
-                    int i = 0;
-                    foreach (var cell in wsRow)
+                    for (int col = worksheet.Dimension.Start.Column; col <= worksheet.Dimension.End.Column; col++)
                     {
-                        row[i++] = cell.Text;
+                        dt.Columns.Add(worksheet.Cells[1, col].Text);
                     }
-                    dt.Rows.Add(row);
+                    for (int row = worksheet.Dimension.Start.Row + 1; row <= worksheet.Dimension.End.Row; row++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        for (int col = worksheet.Dimension.Start.Column; col <= worksheet.Dimension.End.Column; col++)
+                        {
+                            dr[col - 1] = worksheet.Cells[row, col].Text;
+                        }
+                        dt.Rows.Add(dr);
+                    }
                 }
-
-                return dt;
             }
+            return dt;
         }
     }
 }
