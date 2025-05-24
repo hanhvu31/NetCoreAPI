@@ -25,11 +25,13 @@ G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\EPPlus.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\EPPlus.Interfaces.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Humanizer.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\MailKit.dll
+G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Authorization.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.UI.dll
+G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Metadata.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.Build.dll
@@ -452,5 +454,3 @@ G:\Net_Core_API\MvcMovie\obj\Debug\net9.0\refint\MvcMovie.dll
 G:\Net_Core_API\MvcMovie\obj\Debug\net9.0\MvcMovie.pdb
 G:\Net_Core_API\MvcMovie\obj\Debug\net9.0\MvcMovie.genruntimeconfig.cache
 G:\Net_Core_API\MvcMovie\obj\Debug\net9.0\ref\MvcMovie.dll
-G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Authorization.dll
-G:\Net_Core_API\MvcMovie\bin\Debug\net9.0\Microsoft.AspNetCore.Metadata.dll

@@ -1,5 +1,6 @@
-@model IEnumerable<MvcMovie.Models.Person>
-
+@model IPagedList<MvcMovie.Models.Person>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,13 +9,35 @@
 
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a class="btn btn-success" asp-action="Download">Download</a>
 </p>
+
+@using (Html.BeginForm("Index", "Person", FormMethod.Get, new { id = "form1" }))
+{
+    <div class="row mb-3">
+        <div class="col-md-10">
+            @Html.PagedListPager(
+                Model,
+                page => Url.Action("Index", new { page = page, PageSize = ViewBag.psize }),
+                new PagedListRenderOptions
+                {
+                    LiElementClasses = new[] { "page-item" },
+                    PageClasses = new[] { "page-link" }
+                }
+            )
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("PageSize", ViewBag.PageSize as SelectList, null, new { @class = "form-select", id = "pageSize" })
+        </div>
+    </div>
+}
+
 <table class="table table-bordered">
     <thead class="table-dark">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.FullName)</th>
-            <th>@Html.DisplayNameFor(model => model.Address)</th>
-            <th>@Html.DisplayNameFor(model => model.Age)</th>
+            <th>@Html.DisplayNameFor(model => model.First().FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Address)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Age)</th>
             <th class="text-center">Actions</th>
         </tr>
     </thead>
@@ -33,3 +56,14 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#pageSize").change(function () {
+                $("#form1").submit();
+            });
+        });
+    </script>
+}
