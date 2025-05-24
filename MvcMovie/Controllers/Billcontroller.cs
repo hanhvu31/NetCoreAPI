@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc; // 
-using MvcMovie.Models; //
+using Microsoft.AspNetCore.Mvc;
+using MvcMovie.Models;
 namespace MvcMovie.Controllers
 {
     public class Billcontroller : Controller
